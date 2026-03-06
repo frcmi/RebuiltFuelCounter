@@ -5,19 +5,38 @@ using UnityEngine.Rendering;
 using UnityEngine.Experimental.Rendering;
 using Unity.Collections;
 using Shapes;
+using UnityEngine.Serialization;
 
 namespace FuelDetector
 {
+    [System.Serializable]
+    public struct RectWrapper
+    {
+        public Rect rect;
+    }
+
     public class FuelDetectorManager : ImmediateModeShapeDrawer
     {
-        [Header("Detection Settings")]
-        public Rect regionOfInterest = new Rect(0, 0, 1, 1);
-        public bool useDownscaling = true;
-        public Vector2Int downscaleResolution = new Vector2Int(256, 144);
-
         private const string PREF_YELLOW_SENS = "FuelDetector_YellowSensitivity";
         private const string PREF_MOTION_SENS = "FuelDetector_MotionSensitivity";
         private const string PREF_BRIGHTNESS_THRESH = "FuelDetector_BrightnessThreshold";
+        private const string PREF_ROI = "FuelDetector_ROI";
+
+        [Header("Detection Settings")]
+        [FormerlySerializedAs("regionOfInterest")]
+        [SerializeField] private Rect _regionOfInterest = new Rect(0, 0, 1, 1);
+        public Rect regionOfInterest
+        {
+            get => _regionOfInterest;
+            set
+            {
+                _regionOfInterest = value;
+                string json = JsonUtility.ToJson(new RectWrapper { rect = _regionOfInterest });
+                PlayerPrefs.SetString(PREF_ROI, json);
+            }
+        }
+        public bool useDownscaling = true;
+        public Vector2Int downscaleResolution = new Vector2Int(256, 144);
 
         [Range(0, 1)] [SerializeField] private float _yellowSensitivity = 0.8f;
         public float yellowSensitivity
@@ -104,6 +123,16 @@ namespace FuelDetector
             _yellowSensitivity = PlayerPrefs.GetFloat(PREF_YELLOW_SENS, _yellowSensitivity);
             _motionSensitivity = PlayerPrefs.GetFloat(PREF_MOTION_SENS, _motionSensitivity);
             _brightnessThreshold = PlayerPrefs.GetFloat(PREF_BRIGHTNESS_THRESH, _brightnessThreshold);
+
+            string roiJson = PlayerPrefs.GetString(PREF_ROI, "");
+            if (!string.IsNullOrEmpty(roiJson))
+            {
+                try
+                {
+                    _regionOfInterest = JsonUtility.FromJson<RectWrapper>(roiJson).rect;
+                }
+                catch { }
+            }
 
             if (!backgroundAccumShader) backgroundAccumShader = Shader.Find("Hidden/FuelDetector/BackgroundAccumulator");
             if (!yellowDetectorShader) yellowDetectorShader = Shader.Find("Hidden/FuelDetector/SmartYellowDetector");
@@ -367,6 +396,21 @@ namespace FuelDetector
                 Draw.Line(p1, p2, Color.yellow);
                 Draw.Line(p2, p3, Color.yellow);
                 Draw.Line(p3, p0, Color.yellow);
+
+                // ROI Drag Handles (Visual indicators for draggable edges)
+                float roiWidth = roiXMax - roiXMin;
+                float hWidth = roiWidth * 0.2f; // 20% of ROI width
+                float hYOffset = 0.015f; // Small offset from edge
+
+                // Top handle indicator
+                Vector3 thL = AspectSpaceToWorld(new Vector2((roiXMin + roiXMax) * 0.5f - hWidth * 0.5f, roiYMax - hYOffset));
+                Vector3 thR = AspectSpaceToWorld(new Vector2((roiXMin + roiXMax) * 0.5f + hWidth * 0.5f, roiYMax - hYOffset));
+                Draw.Line(thL, thR, Color.yellow);
+
+                // Bottom handle indicator
+                Vector3 bhL = AspectSpaceToWorld(new Vector2((roiXMin + roiXMax) * 0.5f - hWidth * 0.5f, roiYMin + hYOffset));
+                Vector3 bhR = AspectSpaceToWorld(new Vector2((roiXMin + roiXMax) * 0.5f + hWidth * 0.5f, roiYMin + hYOffset));
+                Draw.Line(bhL, bhR, Color.yellow);
 
                 // 2. Draw Mid-line (Dashed)
                 float midlineY = regionOfInterest.yMin + regionOfInterest.height * midline;

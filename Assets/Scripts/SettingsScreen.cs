@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Linq;
 
+
 public class SettingsScreen : MonoBehaviour
 {
     [Header("References")]
@@ -59,10 +60,23 @@ public class SettingsScreen : MonoBehaviour
         InitializePlaybackButtons();
         InitializeCalibrationButton();
         FixDropdownScrollSpeed();
+        InitializeROIDragHandler();
         
         videoInputManager.onCameraChanged.AddListener(UpdateVideoDropdown);
         videoInputManager.onRecordingFinished.AddListener(OnRecordingFinished);
         _needsAspectRefresh = true;
+    }
+
+    private void InitializeROIDragHandler()
+    {
+        if (!videoDisplayImage) return;
+
+        var handler = videoDisplayImage.GetComponent<ROIDragHandler>();
+        if (!handler) handler = videoDisplayImage.gameObject.AddComponent<ROIDragHandler>();
+
+        handler.fuelDetectorManager = fuelDetectorManager;
+        handler.onDragEnd = () => PlayerPrefs.Save();
+        handler.onRefreshNeeded = TriggerRefreshIfPaused;
     }
 
     private void OnDisable()

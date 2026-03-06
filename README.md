@@ -51,7 +51,7 @@ adb install Builds/RebuiltFuelCounter.apk
 
 1.  **Mounting:** Mount the device, centered on one side of the hub, with a clear view of the inside (drill a hole for the phone's camera), just below the hub funnel (see photos from 5937's field).
 2.  **Calibration:** Ensure no balls are in the frame and tap **Calibrate**. The app will average several frames to "learn" the background.
-3.  **Region of Interest (ROI):** Adjust the ROI and mid-line in the settings to match your specific scoring geometry.
+3.  **Region of Interest (ROI):** Adjust the ROI and mid-line in the settings to match your specific scoring geometry. The ROI can be resized by dragging its top or bottom edges directly on the video display. Changes are saved automatically.
 4.  **Sensitivity:** Fine-tune the Brightness Threshold sensitivity slider in the Settings screen while watching the "Detector" view.
 5.  **Remote Access:** Connect to the device's IP (or `FuelCounter.local`) on port `8080` to view the web dashboard. Make sure to use http, not https, since it's a LAN (local) only, insecure connection.
 

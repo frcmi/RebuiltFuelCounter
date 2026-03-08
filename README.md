@@ -8,11 +8,11 @@ An open-source, high-performance fuel (yellow ball) counter designed for the FRC
 
 *   **Easy Setup:** Don't need to code, just install the APK, mount the phone, run the app and you're counting fuel.
 *   **GPU-Accelerated Detection:** Uses custom shaders for all heavy vision processing. No dependency on bulky libraries like OpenCV.
-*   **Low-Cost Hardware:** Optimized to run smoothly on ~$40 Android devices.
+*   **Low-Cost Hardware:** Optimized to run smoothly on ~$40 Android devices (Moto G Play, Galaxy A15, etc).
 *   **Remote Monitoring:** Built-in web server and API for remote score tracking and management.
 *   **mDNS Discovery:** Easily find the device on your network at `http://FuelCounter.local:8080`.
 *   **Robust Tracking:** Handles bouncing balls that go out of frame and varying lighting conditions via background calibration.
-*   **Diagnostic Tools:** Includes recording/playback for offline tuning, real-time performance metrics (CPU/GPU), and visual debug overlays.
+*   **Diagnostic Tools:** Includes recording/playback for vision tuning, real-time performance metrics (CPU/GPU), and visual debug overlays.
 
 ## How Detection Works
 
@@ -24,7 +24,7 @@ The system is designed for maximum efficiency by offloading the majority of the 
 4.  **Temporal Tracking:** A tracking layer associates blobs across frames. It counts a score only when a ball passes through a defined "mid-line" while moving in a downward trajectory. This effectively filters out "bouncing" balls that have already been counted.
 
 ### Accuracy Note
-While highly accurate, the system may miss counts if two balls fall at the exact same time with one perfectly occluding the other (one directly in front of the camera relative to the other). In practice, this is rare for typical FRC fuel intake/scoring setups.
+While accuracy is good, the vision system may miss points if two balls fall at the exact same time with one occluding the other (one in front of the camera relative to the other). In practice, this is uncommon for most intake/scoring setups, but vision-based detection is not be recommended for high-volume, concurrent shooters.
 
 ## Requirements
 

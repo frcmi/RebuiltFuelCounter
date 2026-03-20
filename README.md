@@ -14,6 +14,7 @@ An open-source, high-performance fuel (yellow ball) counter designed for the FRC
 *   **Low-Cost Hardware:** Optimized to run smoothly on ~$40 Android devices (Moto G Play, Galaxy A15, etc).
 *   **Remote Monitoring:** Built-in web server and API for remote score tracking and management.
 *   **mDNS Discovery:** Easily find the device on your network at `http://FuelCounter.local:8080`.
+*   **Rate Monitoring:** Tracks fuel-per-second/-minute. Tap the rate value to toggle between seconds and minutes. Rate timer starts on first fuel detected after app startup or reset.
 *   **Robust Tracking:** Handles bouncing balls that go out of frame and varying lighting conditions via background calibration.
 *   **Diagnostic Tools:** Includes recording/playback for vision tuning, real-time performance metrics (CPU/GPU), and visual debug overlays.
 
@@ -22,7 +23,7 @@ An open-source, high-performance fuel (yellow ball) counter designed for the FRC
 
 ## How Detection Works
 
-The system is designed for maximum efficiency by offloading the majority of the "vision" work to the GPU:
+The system is designed for mobile device efficiency using custom shaders:
 
 1.  **Calibration:** The app captures a series of frames to build a static "Background Model."
 2.  **Smart Shader:** A custom GPU shader compares the live feed against the background, specifically looking for "Yellow" objects that are moving or different from the calibrated scene.
@@ -59,8 +60,8 @@ adb install Builds/RebuiltFuelCounter.apk
 ## Setup & Usage
 
 1.  **Mounting:** Mount the device, centered on one side of the hub, with a clear view of the inside (drill a hole for the phone's camera), just below the hub funnel (see photos from 5937's field).
-2.  **Calibration:** Ensure no balls are in the frame and tap **Calibrate**. The app will average several frames to "learn" the background.
-3.  **Region of Interest (ROI):** Adjust the ROI and mid-line in the settings to match your specific scoring geometry. The ROI can be resized by dragging its top or bottom edges directly on the video display. Changes are saved automatically.
+2.  **Calibration:** Ensure no fuel is in view and tap **Calibrate**. The app will average several frames to "learn" the background. Any time the camera moves, even a millimeter, you'll want to recalibrate.
+3.  **Region of Interest (ROI):** Adjust the ROI and mid-line in the settings to match your specific scoring geometry. The ROI can be resized by dragging its top or bottom edges directly on the video display. Changes are saved automatically. Keep the ROI as large as possible for best detection.
 4.  **Sensitivity:** Fine-tune the Brightness Threshold sensitivity slider in the Settings screen while watching the "Detector" view.
 5.  **Remote Access:** Connect to the device's IP (or `FuelCounter.local`) on port `8080` to view the web dashboard. Make sure to use http, not https, since it's a LAN (local) only, insecure connection.
 
@@ -71,8 +72,8 @@ adb install Builds/RebuiltFuelCounter.apk
 For deep detector optimization, several parameters can be adjusted via the **FuelDetectorManager** object in the Unity Inspector. These settings are not available in the runtime UI and require a re-build:
 
 *   **Midline (0-1):** Sets the vertical position of the scoring threshold within the Region of Interest. Balls must cross this line in a downward direction to count.
-*   **Min Blob Area:** The minimum pixel size required for an object to be recognized. Increase this to filter out background noise or small debris.
-*   **Max Match Distance:** Controls how far the tracker "looks" for a ball between frames. Higher values help with very fast-moving balls but may cause confusion if balls are tightly clustered.
+*   **Min Blob Area:** The minimum UV-space area required for an object to be recognized. 1.0 is a ball that fills the entire camera view. This filters out background noise, small debris, or distant balls on the field.
+*   **Max Match Distance:** Controls how far the tracker "looks ahead" to match up blobs between frames. Higher values help with very fast-moving balls but may cause confusion if multiple balls are tightly clustered.
 *   **Yellow Sensitivity:** Adjusts the color-matching threshold for the fuel's specific yellow hue.
 *   **Motion Sensitivity:** Determines how aggressively the shader ignores static background pixels in favor of moving ones.
 

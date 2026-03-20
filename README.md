@@ -34,7 +34,7 @@ The system is designed for mobile device efficiency using custom shaders:
 : : : _Screenshot of Vision Analysis_
 
 ### Accuracy Note
-While accuracy is good, the vision system may miss points if two balls fall at the exact same time with one occluding the other (one in front of the camera relative to the other). In practice, this is uncommon for most intake/scoring setups, but vision-based detection is not be recommended for high-volume, concurrent shooters.
+While accuracy is good, the vision system may miss points if two balls fall at the exact same time with one occluding the other (one in front of the camera relative to the other). In practice, this is uncommon for most intake/scoring setups, but vision-based detection is not recommended for high-volume, concurrent shooters.
 
 ## Requirements
 

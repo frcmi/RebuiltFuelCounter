@@ -10,11 +10,11 @@ An open-source, high-performance fuel (yellow ball) counter designed for the FRC
 ## Key Features
 
 *   **Easy Setup:** Don't need to code, just install the APK, mount the phone, run the app and you're counting fuel.
+*   **Rate Measurement:** Fuel/second or fuel/minute. Tap the rate value to toggle between seconds and minutes. Rate timer starts on first fuel detected after app startup or reset.
+*   **Low-Cost Hardware:** Optimized to run smoothly on ~$40 Android devices (Moto G Play, Galaxy A15, etc). Look for used or referbished devices.
 *   **GPU-Accelerated Detection:** Uses custom shaders for all heavy vision processing. No dependency on bulky libraries like OpenCV.
-*   **Low-Cost Hardware:** Optimized to run smoothly on ~$40 Android devices (Moto G Play, Galaxy A15, etc).
-*   **Remote Monitoring:** Built-in web server and API for remote score tracking and management.
+*   **Remote Monitoring:** Built-in web server and API for remote score tracking and management on the same WiFi.
 *   **mDNS Discovery:** Easily find the device on your network at `http://FuelCounter.local:8080`.
-*   **Rate Monitoring:** Tracks fuel-per-second/-minute. Tap the rate value to toggle between seconds and minutes. Rate timer starts on first fuel detected after app startup or reset.
 *   **Robust Tracking:** Handles bouncing balls that go out of frame and varying lighting conditions via background calibration.
 *   **Diagnostic Tools:** Includes recording/playback for vision tuning, real-time performance metrics (CPU/GPU), and visual debug overlays.
 
@@ -34,13 +34,17 @@ The system is designed for mobile device efficiency using custom shaders:
 : : : _Screenshot of Vision Analysis_
 
 ### Accuracy Note
-While accuracy is good, the vision system may miss points if two balls fall at the exact same time with one occluding the other (one in front of the camera relative to the other). In practice, this is uncommon for most intake/scoring setups, but vision-based detection is not recommended for high-volume, concurrent shooters.
+While accuracy is good, the vision system may miss points if two balls fall at the exact same time with one occluding the other (one in front of the camera relative to the other). In practice, this is uncommon for most intake/scoring setups, but vision-based detection is not recommended for high-volume, concurrent (drumbot) shooters.
 
 ## Requirements
 
 *   **Platform:** Android (Tested and Supported). iOS support is architected but currently untested.
 *   **Hardware:** Any Android device with a functional camera and GPU (OpenGLES 3.0+).
 *   **Development:** Unity 6000.0+ (recommended).
+
+> - - -
+> _**Obtaining An Inexpensive Android Phone:** In the United States, retailers often sell new or referbished Android phones for around $40 because they want you to sign up for their paid cellular plans. However, you don't need to insert the SIM card! The device will run fine using only a WiFi connection._
+> - - -
 
 ## Installing the APK (Sideloading)
 

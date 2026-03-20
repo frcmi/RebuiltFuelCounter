@@ -4,7 +4,7 @@ _**Mercer Island Robotics - Team 5937**_
 
 An open-source, high-performance fuel (yellow ball) counter designed for the FRC 2026 "Rebuilt" season. This application turns a low-cost Android device into a smart sensor for tracking game piece counts and scoring rates. Requires no additional sensors or wires, only a phone.
 
-![Screenshot of App Counter Display](images/AppScoreCounter.jpg)
+![Screenshot of App Counter Display](images/AppScoreCounter.jpg)<br/>
 : : : _Screenshot of App Counter Display_
 
 ## Key Features
@@ -17,7 +17,7 @@ An open-source, high-performance fuel (yellow ball) counter designed for the FRC
 *   **Robust Tracking:** Handles bouncing balls that go out of frame and varying lighting conditions via background calibration.
 *   **Diagnostic Tools:** Includes recording/playback for vision tuning, real-time performance metrics (CPU/GPU), and visual debug overlays.
 
-![Screenshot of App Settings & Debug](images/AppSettings.jpg)
+![Screenshot of App Settings & Debug](images/AppSettings.jpg)<br/>
 : : : _Screenshot of App Settings & Debug_
 
 ## How Detection Works
@@ -29,7 +29,7 @@ The system is designed for maximum efficiency by offloading the majority of the 
 3.  **Blob Processing:** The resulting mask is read back from the GPU. A fast CPU-based flood-fill algorithm identifies individual "blobs" (balls), calculating their position, area, and velocity.
 4.  **Temporal Tracking:** A tracking layer associates blobs across frames. It counts a score only when a ball passes through a defined "mid-line" while moving in a downward trajectory. This effectively filters out "bouncing" balls that have already been counted.
 
-![Screenshot of Vision Analysis](images/AppFrameAnalysis.jpg)
+![Screenshot of Vision Analysis](images/AppFrameAnalysis.jpg)<br/>
 : : : _Screenshot of Vision Analysis_
 
 ### Accuracy Note

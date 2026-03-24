@@ -87,4 +87,4 @@ This is an open-source project for the FRC community. Contributions in the form 
 
 ## License
 
-This project is released under the [MIT License](LICENSE).
+This project is released under a [Modified MIT License](LICENSE) which prohibits sales by for-profit organizations and individuals.
